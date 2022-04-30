@@ -9,3 +9,4 @@ __pycache__
 .cdk.staging
 cdk.out
 lambda_fns/node_modules
+.venv
