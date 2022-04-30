@@ -1,0 +1,71 @@
+{
+  "interactionModel": {
+      "languageModel": {
+          "invocationName": "c. d. k. patterns",
+          "intents": [
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "PatternListIntent",
+                  "slots": [
+                    {
+                      "name": "number",
+                      "type": "AMAZON.NUMBER",
+                      "samples": []
+                    },
+                    {
+                      "name": "house",
+                      "type": "HOUSE",
+                      "samples": []
+                    }
+                  ],
+                  "samples": [
+                    "add {number} points to {house}",
+                    "{number} points to {house}",
+                    "give {number} points to {house}",
+                    "award {number} points to {house}",
+                    "grant {number} points to {house}",
+                    "allocate {number} points to {house}"
+                  ]
+              }
+          ],
+          "types": [        
+            {
+              "name": "HOUSE",
+              "values": [
+                {
+                  "name": {
+                    "value": "gryffindor"
+                  }
+                },
+                {
+                  "name": {
+                    "value": "ravenclaw"
+                  }
+                },
+                {
+                  "name": {
+                    "value": "hufflepuff"
+                  }
+                },
+                {
+                  "name": {
+                    "value": "slytherin"
+                  }
+                }
+              ]
+            }
+          ]
+      }
+  }
+}
