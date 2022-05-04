@@ -16,6 +16,7 @@ As previously mentioned the amount of pre-requisites to get up and running are v
 
 ### Manual pre-reqs
 - Register any domain name in Route53
+- Setup and configure Amazon developer account
 
 #### 1. Create an [Amazon Developer account](https://developer.amazon.com/)
 Alexa is an Amazon product even though it can be deployed through AWS you still need to have a separate [Amazon Developer account](https://developer.amazon.com/)
