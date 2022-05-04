@@ -130,13 +130,12 @@ $ cdk bootstrap --cloudformation-execution-policies arn:aws:iam::aws:policy/Admi
 
 ### Deploy
 
-You should now have met all the conditions to safely deploy the project to your AWS account. Run the below command with the required parameters.
+You should now have met all the conditions to safely deploy the project to your AWS account. Run the below command with the required parameter.
 - account_id = The account id needs to be explicitly passed as a parameter as a requirement for hosted-zone lookups
-- domain = Route53 registered domain name that resides in the same account as passed above
 
 Example:
 ```bash
-$ cdk deploy -c domain=hopkinshousecup.com -c account_id=1234567890
+$ cdk deploy -c account_id=1234567890
 ```
 
 ### Tear down
@@ -144,5 +143,5 @@ $ cdk deploy -c domain=hopkinshousecup.com -c account_id=1234567890
 Tear down is mostly as simple as running the below command:
 
 ```bash
-$ cdk destroy -c domain=hopkinshousecup.com -c account_id=1234567890
+$ cdk destroy -c account_id=1234567890
 ```
