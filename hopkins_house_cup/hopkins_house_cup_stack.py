@@ -40,18 +40,19 @@ class HopkinsHouseCupStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
         
-        domainName = 'hopkinshousecup.com';
+        # Must register this in Route53
+        domain_name = 'hopkinshousecup.com'
 
         # Requires you own the domain name passed as param and hosted zone exists in R53
-        zone = route53.HostedZone.from_lookup(self, 'HouseCupZone', domain_name=domainName);
+        zone = route53.HostedZone.from_lookup(self, 'HouseCupZone', domain_name=domain_name);
 
         # Create Origin Access Identity
-        cloudfrontOAI = cloudfront.OriginAccessIdentity(self, 'cloudfront-OAI', comment=f"OAI for {id}")
-        CfnOutput(self, "HopkinsOAI", value=f"https://{domainName}")
+        cloudfront_OAI = cloudfront.OriginAccessIdentity(self, 'cloudfront-OAI', comment=f"OAI for {id}")
+        CfnOutput(self, "HopkinsOAI", value=f"https://{domain_name}")
 
         # S3 site content bucket
-        siteBucket = s3.Bucket(self, 'HouseCupBucket', 
-          bucket_name=domainName,
+        site_bucket = s3.Bucket(self, 'HouseCupBucket', 
+          bucket_name=domain_name,
           public_read_access=False,
           block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
           removal_policy=RemovalPolicy.DESTROY,
@@ -59,18 +60,18 @@ class HopkinsHouseCupStack(Stack):
         )
         
         # Grant S3 bucket access to CloudFront
-        siteBucket.add_to_resource_policy(iam.PolicyStatement(
+        site_bucket.add_to_resource_policy(iam.PolicyStatement(
           actions=['s3:GetObject'],
-          resources=[siteBucket.arn_for_objects('*')],
-          principals=[iam.CanonicalUserPrincipal(cloudfrontOAI.cloud_front_origin_access_identity_s3_canonical_user_id)]
+          resources=[site_bucket.arn_for_objects('*')],
+          principals=[iam.CanonicalUserPrincipal(cloudfront_OAI.cloud_front_origin_access_identity_s3_canonical_user_id)]
         ))
-        CfnOutput(self, "HouseBucket", value=siteBucket.bucket_name)
+        CfnOutput(self, "HouseBucket", value=site_bucket.bucket_name)
 
         # TLS certificate for use with website
         certificate = acm.DnsValidatedCertificate(self, 'HopkinsHouseCupCertificate',
-          domain_name=domainName,
+          domain_name=domain_name,
           subject_alternative_names=[
-            '*.' + domainName
+            '*.' + domain_name
           ],
           hosted_zone=zone,
           region='us-east-1', 
@@ -78,17 +79,17 @@ class HopkinsHouseCupStack(Stack):
         CfnOutput(self, 'Certificate', value=certificate.certificate_arn)
         
         # CloudFront distribution instantiation
-        s3Origin = S3Origin(siteBucket, origin_access_identity=cloudfrontOAI)
+        s3_origin = S3Origin(site_bucket, origin_access_identity=cloudfront_OAI)
         distribution = cloudfront.Distribution(self, 'HopkinsHouseCupDistribution',
           certificate=certificate,
           default_root_object="index.html",
           domain_names=[
-            domainName, 
-            f"*.{domainName}" 
+            domain_name, 
+            f"*.{domain_name}" 
           ],
           minimum_protocol_version=cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
           default_behavior=cloudfront.BehaviorOptions(
-            origin=s3Origin,
+            origin=s3_origin,
             compress=True,
             allowed_methods=cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
             viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
@@ -98,23 +99,23 @@ class HopkinsHouseCupStack(Stack):
         CfnOutput(self, 'DistributionId', value=distribution.distribution_id);
 
         # Route53 alias record for the CloudFront distribution
-        apexRecord= route53.ARecord(self, 'SiteAliasRecord',
-          record_name=domainName,
+        apex_record= route53.ARecord(self, 'SiteAliasRecord',
+          record_name=domain_name,
           target=route53.RecordTarget.from_alias(CloudFrontTarget(distribution)),
           zone=zone
         )
 
         # Route53 alias record for the CloudFront distribution
         route53.ARecord(self, 'WWWApexRecordAlias',
-            record_name=f"www.{domainName}",
-            target=route53.RecordTarget.from_alias(Route53RecordTarget(apexRecord)),
+            record_name=f"www.{domain_name}",
+            target=route53.RecordTarget.from_alias(Route53RecordTarget(apex_record)),
             zone=zone
         )
 
         # Deploy site contents to S3 bucket
         s3deploy.BucketDeployment(self, 'DeployWithInvalidation',
           sources=[s3deploy.Source.asset('./site-contents')],
-          destination_bucket=siteBucket,
+          destination_bucket=site_bucket,
           distribution=distribution,
           distribution_paths=['/*']
         )
