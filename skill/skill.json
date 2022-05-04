@@ -3,13 +3,12 @@
       "publishingInformation": {
           "locales": {
               "en-US": {
-                  "name": "CDK Patterns Sample",
-                  "summary": "A simple skill deployed using CDK through CDK Patterns",
-                  "description": "Leverage CDK to deploy your first Alexa Skill",
+                  "name": "Hopkins House Cup",
+                  "summary": "A skill that keeps track of points per house in DDB.",
+                  "description": "A skill that keeps track of points per house in DDB built by the AWS CDK.",
                   "examplePhrases": [
-                      "Alexa open CDK Patterns Sample",
-                      "hello",
-                      "help"
+                      "Alexa add ten points to ravenclaw",
+                      "Alexa remove ten points from slytherin"
                   ],
                   "keywords": []
               }

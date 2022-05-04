@@ -1,22 +1,14 @@
 {
   "interactionModel": {
       "languageModel": {
-          "invocationName": "c. d. k. patterns",
+          "invocationName": "hopkins house cup",
           "intents": [
-              {
-                  "name": "AMAZON.CancelIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.HelpIntent",
-                  "samples": []
-              },
               {
                   "name": "AMAZON.StopIntent",
                   "samples": []
               },
               {
-                  "name": "PatternListIntent",
+                  "name": "AddHousePointsIntent",
                   "slots": [
                     {
                       "name": "number",

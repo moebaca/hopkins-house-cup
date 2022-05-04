@@ -37,14 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var ask_sdk_core_1 = require("ask-sdk-core");
-var patterns = ['The Destined Lambda', 'The S3 React Website', 'The State Machine', 'The Dynamo Streamer', 'The Lambda Trilogy', 'The Big Fan', 'The Eventbridge Circuit Breaker', 'The Scalable Webhook', 'The Cloudwatch Dashboard', 'The Saga Stepfunction', 'The S3 Angular Website', 'this pattern that you\'re testing right now: The Alexa Skill'];
-var ddbAdapter = require('ask-sdk-dynamodb-persistence-adapter');
-var USERS_TABLE = process.env.USERS_TABLE || '';
-function getPattern(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
+var ddbAdapter = require("ask-sdk-dynamodb-persistence-adapter");
+var HOUSE_TABLE = process.env.HOUSE_TABLE || '';
 var LaunchRequestHandler = {
     canHandle: function (handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'LaunchRequest' ||
@@ -53,119 +47,63 @@ var LaunchRequestHandler = {
     },
     handle: function (handlerInput) {
         return __awaiter(this, void 0, void 0, function () {
-            var speechText, repromptText, attributesManager;
+            var speechText, repromptText, attributesManager, number, house;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        speechText = 'Hey, it\'s Pancakes the CDK Otter here, what would you like to know?';
-                        repromptText = 'You can ask what CDK Patterns I have, if you like!';
+                        speechText = 'Cup speaking. Which house would you like me to give or take points from?';
+                        repromptText = 'You can say things like, ten points to Ravenclaw, or fifty points from Slytherin.';
                         attributesManager = handlerInput.attributesManager;
-                        attributesManager.setPersistentAttributes({ lastAccessedDate: Date.now(), lastAccessedIntent: 'Launch Request or Navigate Home' });
+                        //   table.update_item(
+                        //     Key={'path': event['path']},
+                        //     UpdateExpression='ADD hits :incr',
+                        //     ExpressionAttributeValues={':incr': 1}
+                        // )
+                        console.log(attributesManager);
+                        number = ask_sdk_core_1.getSlotValue(handlerInput.requestEnvelope, 'number');
+                        house = ask_sdk_core_1.getSlotValue(handlerInput.requestEnvelope, 'house');
+                        attributesManager.setPersistentAttributes({ lastUpdatedDate: Date.now(), house: house, new_points: number, total_points: number, previous_point: number });
                         return [4 /*yield*/, attributesManager.savePersistentAttributes()];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, handlerInput.responseBuilder
                                 .speak(speechText)
                                 .reprompt(repromptText)
-                                .withSimpleCard('Hello World', speechText)
+                                .withSimpleCard('Hopkins House Cup', speechText)
                                 .getResponse()];
                 }
             });
         });
     }
 };
-var PatternListIntentHandler = {
+var AddHousePointsIntentHandler = {
     canHandle: function (handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-            handlerInput.requestEnvelope.request.intent.name === 'PatternListIntent';
+            handlerInput.requestEnvelope.request.intent.name === 'AddHousePointsIntent';
     },
     handle: function (handlerInput) {
         return __awaiter(this, void 0, void 0, function () {
-            var attributesManager, number, house, speechText;
+            var attributesManager, number, house, repromptText, speechText;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         attributesManager = handlerInput.attributesManager;
                         number = ask_sdk_core_1.getSlotValue(handlerInput.requestEnvelope, 'number');
                         house = ask_sdk_core_1.getSlotValue(handlerInput.requestEnvelope, 'house');
-                        attributesManager.setPersistentAttributes({ lastAccessedDate: Date.now(), lastAccessedIntent: 'PatternListIntent' });
+                        repromptText = 'You can say things like, ten points to Ravenclaw, or fifty points from Slytherin.';
+                        attributesManager.setPersistentAttributes({ lastUpdatedDate: Date.now(), house: house, new_points: number, total_points: number, previous_point: number });
                         return [4 /*yield*/, attributesManager.savePersistentAttributes()];
                     case 1:
                         _a.sent();
-                        speechText = 'I have added ' + number + ' to ' + house + '!';
+                        speechText = number + ' points have been awarded to ' + house + '!';
                         return [2 /*return*/, handlerInput.responseBuilder
                                 .speak(speechText)
+                                .reprompt(repromptText)
                                 .withSimpleCard(number + ' to ' + house, speechText)
                                 .getResponse()];
                 }
             });
         });
-    }
-};
-var HelpIntentHandler = {
-    canHandle: function (handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-            handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent' ||
-            handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-                handlerInput.requestEnvelope.request.intent.name === 'AMAZON.FallbackIntent';
-    },
-    handle: function (handlerInput) {
-        return __awaiter(this, void 0, void 0, function () {
-            var speechText, attributesManager;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        speechText = 'You can say hello to me!';
-                        attributesManager = handlerInput.attributesManager;
-                        attributesManager.setPersistentAttributes({ lastAccessedDate: Date.now(), lastAccessedIntent: 'Help or Fallback Intent' });
-                        return [4 /*yield*/, attributesManager.savePersistentAttributes()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, handlerInput.responseBuilder
-                                .speak(speechText)
-                                .reprompt(speechText)
-                                .withSimpleCard('Hello World', speechText)
-                                .getResponse()];
-                }
-            });
-        });
-    }
-};
-var CancelAndStopIntentHandler = {
-    canHandle: function (handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
-            (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent' ||
-                handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
-    },
-    handle: function (handlerInput) {
-        return __awaiter(this, void 0, void 0, function () {
-            var attributesManager, speechText;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        attributesManager = handlerInput.attributesManager;
-                        attributesManager.setPersistentAttributes({ lastAccessedDate: Date.now(), lastAccessedIntent: 'Cancel or Stop Intent' });
-                        return [4 /*yield*/, attributesManager.savePersistentAttributes()];
-                    case 1:
-                        _a.sent();
-                        speechText = 'Goodbye!';
-                        return [2 /*return*/, handlerInput.responseBuilder
-                                .speak(speechText)
-                                .withSimpleCard('Hello World', speechText)
-                                .withShouldEndSession(true)
-                                .getResponse()];
-                }
-            });
-        });
-    }
-};
-var SessionEndedRequestHandler = {
-    canHandle: function (handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
-    },
-    handle: function (handlerInput) {
-        console.log("Session ended with reason: " + handlerInput.requestEnvelope.request.reason);
-        return handlerInput.responseBuilder.getResponse();
     }
 };
 var ErrorHandler = {
@@ -180,15 +118,14 @@ var ErrorHandler = {
             .getResponse();
     }
 };
-var skill;
 function getPersistenceAdapter(tableName) {
     return new ddbAdapter.DynamoDbPersistenceAdapter({
         tableName: tableName,
-        partitionKeyName: "userId"
+        partitionKeyName: "house"
     });
 }
 exports.handler = ask_sdk_core_1.SkillBuilders.custom()
-    .withPersistenceAdapter(getPersistenceAdapter(USERS_TABLE))
-    .addRequestHandlers(LaunchRequestHandler, PatternListIntentHandler, HelpIntentHandler, CancelAndStopIntentHandler, SessionEndedRequestHandler)
+    .withPersistenceAdapter(getPersistenceAdapter(HOUSE_TABLE))
+    .addRequestHandlers(LaunchRequestHandler, AddHousePointsIntentHandler)
     .addErrorHandlers(ErrorHandler)
     .lambda();

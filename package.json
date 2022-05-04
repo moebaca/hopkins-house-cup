@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@types/node": "^17.0.31"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  }
+}
