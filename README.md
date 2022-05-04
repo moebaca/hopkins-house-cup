@@ -7,6 +7,7 @@ This repo allows for repeatedly deploying the *Hopkins House Cup Website* and *H
 ![hopkins-house-cup-site](hopkins-house-cup-site.png)
 
 ## TODO
+- Finish work on GetHouseCupPoints Lambda integration
 - Split out hopkins_house_cup_stack.py into more readable functions/constructs
 - Add unit tests
 - Setup CDK Pipelines for CI/CD on repo update
