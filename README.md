@@ -2,6 +2,8 @@
 
 This repo allows for repeatedly deploying the *Hopkins House Cup Website* and *Hopkins House Cup Alexa Skill* with very little manual prerequisites. The site leverages S3 and CloudFront's global distributed network of edge locations for website hosting as well as Alexa, Lambda and DynamoDB for vocal recognition of point addition/subtraction logic. 
 
+*Note* - This is actively in development - all functionality not completely implemented yet
+
 ## Architecture Diagrams
 ![hopkins-house-cup-alexa](hopkins-house-cup-alexa.png)
 ![hopkins-house-cup-site](hopkins-house-cup-site.png)
