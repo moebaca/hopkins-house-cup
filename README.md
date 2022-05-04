@@ -27,7 +27,6 @@ Alexa is an Amazon product even though it can be deployed through AWS you still 
   Open the [Developer Account Security Profile](https://developer.amazon.com/loginwithamazon/console/site/lwa/create-security-profile.html) page and feel free to use whatever values you want for the Security Profile Name and Description. The Privacy Notice URL must be a valid URL format but does not need to be a valid URL. Once you create your security profile, navigate to the `Web Settings` tab and add the following as `Allowed Return URLs`:
    - `http://127.0.0.1:9090/cb`
    - `https://s3.amazonaws.com/ask-cli/response_parser.html`
-   ![Security Profile](img/lwa-security-profile.png)
    
 #### 3. Copy Your `Client Id` and `Client Secret` from the security profile
 Keep these values safe as we will use them in a second.
