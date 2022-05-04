@@ -52,7 +52,6 @@ Set the following key/values in the request:
 | Client Secret    | {YOUR_CLIENT_SECRET}                                                                                                                  |
 | Scope            | alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test alexa::ask:catalogs:read alexa::ask:catalogs:readwrite |
 |                  |                                                                                                                                       |
-![Postman Auth](img/postman-oauth-settings.png)
 
 A Pop-Up should show up prompting you to log into your Developer account. Log in and you will be redirected to Postman where you should have a `refresh_token` to use in the next steps
 
