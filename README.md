@@ -2,11 +2,14 @@
 
 This repo allows for repeatedly deploying the *Hopkins House Cup Website* and *Hopkins House Cup Alexa Skill* with very little manual prerequisites. The site leverages S3 and CloudFront's global distributed network of edge locations for website hosting as well as Alexa, Lambda and DynamoDB for vocal recognition of point addition/subtraction logic. 
 
+*Note* - This is actively in development - all functionality not completely implemented yet
+
 ## Architecture Diagrams
 ![hopkins-house-cup-alexa](hopkins-house-cup-alexa.png)
 ![hopkins-house-cup-site](hopkins-house-cup-site.png)
 
 ## TODO
+- Finish work on GetHouseCupPoints Lambda integration
 - Split out hopkins_house_cup_stack.py into more readable functions/constructs
 - Add unit tests
 - Setup CDK Pipelines for CI/CD on repo update
@@ -26,7 +29,6 @@ Alexa is an Amazon product even though it can be deployed through AWS you still 
   Open the [Developer Account Security Profile](https://developer.amazon.com/loginwithamazon/console/site/lwa/create-security-profile.html) page and feel free to use whatever values you want for the Security Profile Name and Description. The Privacy Notice URL must be a valid URL format but does not need to be a valid URL. Once you create your security profile, navigate to the `Web Settings` tab and add the following as `Allowed Return URLs`:
    - `http://127.0.0.1:9090/cb`
    - `https://s3.amazonaws.com/ask-cli/response_parser.html`
-   ![Security Profile](img/lwa-security-profile.png)
    
 #### 3. Copy Your `Client Id` and `Client Secret` from the security profile
 Keep these values safe as we will use them in a second.
