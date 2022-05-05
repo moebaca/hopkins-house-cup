@@ -92,7 +92,7 @@
                                 alt="Picture" class="galleryImageBorder wsite-image" /></a><span
                               style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;"
                               class="wsite-caption">
-                              <font size="7" style="font-family: harryPotter">10</font>
+                              <font size="7" style="font-family: harryPotter"><span id="slytherin-score">10</span></font>
                             </span></span>
                           <hr style="width:100%;clear:both;visibility:hidden;">
                           </hr>
@@ -105,7 +105,7 @@
                                 alt="Picture" class="galleryImageBorder wsite-image" /></a><span
                               style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;"
                               class="wsite-caption">
-                              <font size="7" style="font-family: harryPotter">40</font>
+                              <font size="7" style="font-family: harryPotter"><span id="gryffindor-score">40</span></font>
                             </span></span>
                           <hr style="width:100%;clear:both;visibility:hidden;">
                           </hr>
@@ -118,7 +118,7 @@
                                 alt="Picture" class="galleryImageBorder wsite-image" /></a><span
                               style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;"
                               class="wsite-caption">
-                              <font size="7" style="font-family: harryPotter">10</font>
+                              <font size="7" style="font-family: harryPotter"><span id="hufflepuff-score">10</span></font>
                             </span></span>
                           <hr style="width:100%;clear:both;visibility:hidden;">
                           </hr>
@@ -131,7 +131,7 @@
                                 alt="Picture" class="galleryImageBorder wsite-image" /></a><span
                               style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;"
                               class="wsite-caption">
-                              <font size="7" style="font-family: harryPotter">60</font>
+                              <font size="7" style="font-family: harryPotter"><span id="ravenclaw-score">60</span></font>
                             </span></span>
                           <hr style="width:100%;clear:both;visibility:hidden;">
                           </hr>
@@ -150,3 +150,20 @@
 </body>
 
 </html>
+
+<script>
+  document.body.onload = updateScore;
+
+  function updateScore() { 
+    scores = getScores();
+
+    for (const house in scores) {
+      const houseScore = document.querySelector(`#${house}-score`);
+      houseScore.innerText = scores[house];
+    }    
+  }
+
+  function getScores() { 
+    return {'slytherin':102, 'gryffindor': 40, 'hufflepuff': 10, 'ravenclaw': 80};
+  }
+</script>
