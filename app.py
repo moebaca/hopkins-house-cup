@@ -8,14 +8,14 @@ HopkinsHouseCupStack(app, "HopkinsHouseCupStack",
                      env=cdk.Environment(
                         account=app.node.try_get_context('account_id'), 
                         region='us-east-1'
-                        )
+                     )
                      )
 
 HopkinsHouseCupsPointsStack(app, "HopkinsHouseCupPointsStack",
                             env=cdk.Environment(
                                 account=app.node.try_get_context('account_id'), 
                                 region='us-east-1'
-                                )
+                            )
                             )
 
 app.synth()
