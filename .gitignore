@@ -11,4 +11,8 @@ cdk.out
 lambda_fns/node_modules
 venv/
 
+# Apple directory
 **/.DS_Store
+node_modules
+.venv
+cdk.context.json
