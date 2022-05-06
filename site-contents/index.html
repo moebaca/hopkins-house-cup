@@ -5,8 +5,7 @@
   <meta property="og:site_name" content="Hopkins House Cup" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="shortcut icon" href="favicon.ico">
-  <link id="wsite-base-style" rel="stylesheet" type="text/css"
-    href="css/main.css" />
+  <link id="wsite-base-style" rel="stylesheet" type="text/css" href="css/main.css" />
   <style type='text/css'>
     @font-face {
       font-family: harryPotter;
@@ -105,7 +104,8 @@
                                 alt="Picture" class="galleryImageBorder wsite-image" /></a><span
                               style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;"
                               class="wsite-caption">
-                              <font size="7" style="font-family: harryPotter"><span id="gryffindor-score">-</span></font>
+                              <font size="7" style="font-family: harryPotter"><span id="gryffindor-score">-</span>
+                              </font>
                             </span></span>
                           <hr style="width:100%;clear:both;visibility:hidden;">
                           </hr>
@@ -118,7 +118,8 @@
                                 alt="Picture" class="galleryImageBorder wsite-image" /></a><span
                               style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;"
                               class="wsite-caption">
-                              <font size="7" style="font-family: harryPotter"><span id="hufflepuff-score">-</span></font>
+                              <font size="7" style="font-family: harryPotter"><span id="hufflepuff-score">-</span>
+                              </font>
                             </span></span>
                           <hr style="width:100%;clear:both;visibility:hidden;">
                           </hr>
@@ -152,18 +153,18 @@
 </html>
 
 <script>
-  document.body.onload = updateScore;
+  document.body.onload = updateScores;
 
-  function updateScore() { 
-    scores = getScores();
+  function updateScores() {
+      (async () => {
+        const resp = await fetch("https://api.hopkinshousecup.com");
+        const jsonData = await resp.json();
+        console.log("jsonData: ", jsonData);
 
-    for (const house in scores) {
-      const houseScore = document.querySelector(`#${house}-score`);
-      houseScore.innerText = scores[house];
-    }    
-  }
-
-  function getScores() { 
-    return {'slytherin':10, 'gryffindor': 40, 'hufflepuff': 10, 'ravenclaw': 80};
+        for (const house in jsonData) {
+          const houseScore = document.querySelector(`#${house}-score`);
+          houseScore.innerText = jsonData[house];
+        }
+      })();
   }
 </script>
